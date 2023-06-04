@@ -1,2 +1,2 @@
 #!/bin/sh
-rm -f config.h && make && sudo make install && rm -f st.o st util.o 
+rm -f config.h && make && sudo make install && rm -f dwm.o drw.o util.o 

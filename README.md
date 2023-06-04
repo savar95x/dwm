@@ -1,4 +1,5 @@
 # Dynamic Window Manager
+<img src=assets/dwm.png />
 My build of suckless's dynamic window manager.<br>
 The applied patches are in patches/. Feel free to remove that directory in your fork.
 

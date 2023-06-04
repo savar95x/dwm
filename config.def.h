@@ -14,7 +14,7 @@ static const int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 3;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 3;        /* vertical padding for statusbar */
+static const int vertpadbar         = 0;        /* vertical padding for statusbar */
 static const char *fonts[]          = { "monospace:size=13" };
 static const char dmenufont[]       = "monospace:size=13";
 static const char col_gray1[]       = "#1D2021";
@@ -40,14 +40,14 @@ static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   isfakefullscreen monitor */
 	{ "Gimp",     NULL,       NULL,       0,            1,           0,               -1 },
 //	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           1,               -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 9,       0,           1,               -1 },
+	{ "Firefox",  NULL,       NULL,       0,            0,           1,               -1 },
 };
 
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
-static const int lockfullscreen = 0; /* 1 will force focus on the fullscreen window */
+static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -123,7 +123,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,			XK_f,      togglefullscr,  {0} },
+	{ MODKEY,			XK_f,      fullscreen,     {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
