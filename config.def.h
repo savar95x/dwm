@@ -81,6 +81,7 @@ static const Key keys[] = {
 	{  NULL ,         XF86XK_AudioLowerVolume, spawn,          SHCMD("pamixer -d 2 --allow-boost --set-limit 140 && pkill -RTMIN+10 dwmblocks")},
 	{  NULL ,         XF86XK_AudioRaiseVolume, spawn,          SHCMD("pamixer -i 2 --allow-boost --set-limit 140 && pkill -RTMIN+10 dwmblocks")},
 	{ MODKEY,                       XK_w,      spawn,          SHCMD(BROWSER)},
+	{ MODKEY,                       XK_c,      spawn,          SHCMD("pgrep xbanish && pkill xbanish || setsid -f xbanish -t 1")},
 	{ MODKEY|ShiftMask,		XK_w,      spawn,          SHCMD("$HOME/.local/binbg/checkiitmlan")},
 	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e lf") },
 	{ MODKEY,                       XK_n,      spawn,          SHCMD(TERMINAL " -e newsboat") },
