@@ -14,9 +14,9 @@ static const int smartgaps          = 0;        /* 1 means no outer gap when the
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 4;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 0;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "monospace:size=13" };
-static const char dmenufont[]       = "monospace:size=13";
+static const int vertpadbar         = 4;        /* vertical padding for statusbar */
+static const char *fonts[]          = { "spline sans mono:size=12" };
+static const char dmenufont[]       = "spline sans mono:size=12";
 static const char col_gray1[]       = "#1D2021";
 static const char col_gray2[]       = "#282828";
 static const char col_gray3[]       = "#bdae93";
@@ -101,6 +101,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e lf") },
 	{ MODKEY,                       XK_n,      spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_e,      spawn,          SHCMD(TERMINAL " -e neomutt") },
+	{ MODKEY|ShiftMask,             XK_e,      spawn,          SHCMD(BROWSER " 'https://gmail.com'") },
+//	{ MODKEY,                       XK_e,      spawn,          SHCMD(BROWSER " 'https://gmail.com'") },
 	{ MODKEY|ShiftMask,             XK_n,      spawn,          SHCMD(TERMINAL " -e notes") },
 	{ MODKEY,                       XK_m,      spawn,          SHCMD(TERMINAL " -e ncmpcpp") },
 	{ MODKEY,                       XK_g,      spawn,          SHCMD(TERMINAL " -e gotop") },
