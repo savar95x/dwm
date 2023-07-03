@@ -1,7 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 
 #define TERMINAL "st"
-#define BROWSER "firefox"
+#define BROWSER "vimb"
+// firefox, chromium, min, badwolf
 
 /* appearance */
 static const unsigned int borderpx  = 4;        /* border pixel of windows */
