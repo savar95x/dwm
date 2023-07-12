@@ -1,7 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 
 #define TERMINAL "st"
-#define BROWSER "vimb"
+#define BROWSER "firefox"
+#define BROWSERALT "vimb"
 // firefox, chromium, min, badwolf
 
 /* appearance */
@@ -97,6 +98,7 @@ static const Key keys[] = {
 	{  NULL ,         XF86XK_AudioLowerVolume, spawn,          SHCMD("pamixer -d 2 --allow-boost --set-limit 140 && pkill -RTMIN+10 dwmblocks")},
 	{  NULL ,         XF86XK_AudioRaiseVolume, spawn,          SHCMD("pamixer -i 2 --allow-boost --set-limit 140 && pkill -RTMIN+10 dwmblocks")},
 	{ MODKEY,                       XK_w,      spawn,          SHCMD(BROWSER)},
+	{ MODKEY|ShiftMask,             XK_w,      spawn,          SHCMD(BROWSERALT)},
 	{ MODKEY,                       XK_c,      spawn,          SHCMD("pgrep xbanish && pkill xbanish || setsid -f xbanish -t 1")},
 	{ MODKEY|ShiftMask,		XK_w,      spawn,          SHCMD("$HOME/.local/binbg/checkiitmlan")},
 	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e lf") },
@@ -167,7 +169,8 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	//{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("$HOME/.local/binbg/dmpkillwm dwm") },
 };
 
 /* button definitions */
