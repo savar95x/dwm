@@ -1,0 +1,2 @@
+#!/bin/sh
+make && sudo make install && rm -f dwm.o drw.o util.o config.h dwm
