@@ -1,6 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 
 #define TERMINAL "st"
+#define EMAIL "firefox 'https://gmail.com'"
+#define TORRENTCLIENT "(pgrep transmission-da &>/dev/null && transmission-qt) || (setsid -f transmission-daemon && transmission-qt)"
 
 /* appearance */
 static const unsigned int borderpx  = 4;        /* border pixel of windows */
@@ -38,7 +40,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
+//	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
 //	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "st",      NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ "floating",NULL,     NULL,           0,         1,          0,           1,        -1 },
@@ -89,7 +91,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "100x25", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -101,16 +103,17 @@ static const Key keys[] = {
 //	{ MODKEY,			XK_grave,  spawn,          SHCMD(TERMINAL " -c floating -e nvim $HOME/dox/note.tmp") },
 //	{ MODKEY|ShiftMask,             XK_tilde,  spawn,          SHCMD(TERMINAL " -e nvim $HOME/dox/note.tmp") },
 	{ MODKEY|ShiftMask,	     XK_BackSpace, spawn,          SHCMD("$HOME/.local/binbg/dmpowermenu")},
+	{ MODKEY,		     	XK_Insert, spawn,          SHCMD("$HOME/.local/bin/dmpassmenu --type")},
 	{  NULL ,         XF86XK_AudioLowerVolume, spawn,          SHCMD("$HOME/.local/bin/sb_audio dec 2 && pkill -RTMIN+10 dwmblocks")},
 	{  NULL ,         XF86XK_AudioRaiseVolume, spawn,          SHCMD("$HOME/.local/bin/sb_audio inc 2 && pkill -RTMIN+10 dwmblocks")},
 	{  NULL ,          	 XF86XK_AudioMute, spawn,          SHCMD("$HOME/.local/bin/sb_audio toggle && pkill -RTMIN+10 dwmblocks")},
 	{ MODKEY,                       XK_s,      spawn,          SHCMD("$HOME/.local/binbg/dmlscripts") },
 	{ MODKEY,			XK_w,      spawn,          SHCMD("$HOME/.local/binbg/dmweb")},
-	{ MODKEY,                       XK_e,      spawn,          SHCMD(TERMINAL " -e neomutt") },
+	{ MODKEY,                       XK_e,      spawn,          SHCMD(EMAIL) },
 	{ MODKEY,                       XK_m,      spawn,          SHCMD(TERMINAL " -e ncmpcpp") },
 	{ MODKEY,                       XK_y,      spawn,          SHCMD(TERMINAL " -e ytfzf") },
-	{ MODKEY,                       XK_t,      spawn,          SHCMD(TERMINAL " -e tremc") },
-	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e lf") },
+	{ MODKEY,                       XK_t,      spawn,          SHCMD(TORRENTCLIENT) },
+	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e lfub") },
 	{ MODKEY,                       XK_p,      spawn,          SHCMD(TERMINAL " -e shellcaster") },
 	{ MODKEY,                       XK_n,      spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,      spawn,          SHCMD(TERMINAL " -e gotop") },
@@ -173,6 +176,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	//{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("$HOME/.local/binbg/dmpkillwm dwm") },
+	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("$HOME/.config/dwm/autostart.sh") },
 };
 
 /* button definitions */
