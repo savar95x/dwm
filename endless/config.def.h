@@ -102,18 +102,18 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
 //	{ MODKEY,			XK_grave,  spawn,          SHCMD(TERMINAL " -c floating -e nvim $HOME/dox/note.tmp") },
 //	{ MODKEY|ShiftMask,             XK_tilde,  spawn,          SHCMD(TERMINAL " -e nvim $HOME/dox/note.tmp") },
-	{ MODKEY|ShiftMask,	     XK_BackSpace, spawn,          SHCMD("$HOME/.local/binbg/dmpowermenu")},
+	{ MODKEY|ShiftMask,	     XK_BackSpace, spawn,          SHCMD("$HOME/.local/scripts/dmpowermenu")},
 	{ MODKEY,		     	XK_Insert, spawn,          SHCMD("$HOME/.local/bin/dmpassmenu --type")},
 	{  NULL ,         XF86XK_AudioLowerVolume, spawn,          SHCMD("$HOME/.local/bin/sb_audio dec 2 && pkill -RTMIN+10 dwmblocks")},
 	{  NULL ,         XF86XK_AudioRaiseVolume, spawn,          SHCMD("$HOME/.local/bin/sb_audio inc 2 && pkill -RTMIN+10 dwmblocks")},
 	{  NULL ,          	 XF86XK_AudioMute, spawn,          SHCMD("$HOME/.local/bin/sb_audio toggle && pkill -RTMIN+10 dwmblocks")},
-	{ MODKEY,                       XK_s,      spawn,          SHCMD("$HOME/.local/binbg/dmlscripts") },
-	{ MODKEY,			XK_w,      spawn,          SHCMD("$HOME/.local/binbg/dmweb")},
+	{ MODKEY,                       XK_s,      spawn,          SHCMD("$HOME/.local/scripts/dmlscripts") },
+	{ MODKEY,			XK_w,      spawn,          SHCMD("$HOME/.local/scripts/dmweb")},
 	{ MODKEY,                       XK_e,      spawn,          SHCMD(EMAIL) },
 	{ MODKEY,                       XK_m,      spawn,          SHCMD(TERMINAL " -e ncmpcpp") },
 	{ MODKEY,                       XK_y,      spawn,          SHCMD(TERMINAL " -e ytfzf") },
 	{ MODKEY,                       XK_t,      spawn,          SHCMD(TORRENTCLIENT) },
-	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e lfub") },
+	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e lf") },
 	{ MODKEY,                       XK_p,      spawn,          SHCMD(TERMINAL " -e shellcaster") },
 	{ MODKEY,                       XK_n,      spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,      spawn,          SHCMD(TERMINAL " -e gotop") },
@@ -175,7 +175,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	//{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("$HOME/.local/binbg/dmpkillwm dwm") },
+	{ MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("$HOME/.local/scripts/dmpkillwm dwm") },
 	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("$HOME/.config/dwm/autostart.sh") },
 };
 
