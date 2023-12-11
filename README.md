@@ -12,9 +12,9 @@ This is just the dwm source code. You can find the rest of the stuff (along with
 ## Installation
 Clone this repo and run compiledwm
 ```bash
-git clone https://github.com/savar95x/dwm
-cd dwm
-./compiledwm
+$ git clone https://github.com/savar95x/dwm
+$ cd dwm
+$ ./compiledwm
 ```  
 This should make and install dwm.  
 
@@ -26,7 +26,7 @@ exec dwm
 ```  
 And make this file `~/.xinitrc` executable  
 ```bash
-chmod +x ~/.xinitrc
+$ chmod +x ~/.xinitrc
 ```  
 Now whenever you run `startx` from the linux console, it should run the `~/.xinitrc` file.  
 
