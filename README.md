@@ -7,4 +7,4 @@ This is just the dwm source code. You can find the rest of the stuff (along with
 [dwmblocks](https://github.com/savar95x/dwmblocks) - The statusbar  
 [dotfiles](https://github.com/savar95x/dotfiles) - Mostly the stuff stored in the .config directory  
 ### Thanks
-[lukesmith](lukesmith.xyz) for his chad way of living
+[lukesmith](https://lukesmith.xyz) for his chad way of living
