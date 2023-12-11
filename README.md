@@ -10,7 +10,7 @@ This is just the dwm source code. You can find the rest of the stuff (along with
 
 [reddit post](https://www.reddit.com/r/unixporn/comments/15sh6yw/dwm_dream_of_the_endless/)
 ## Installation
-Clone this repo and run compiledwm
+Clone this repo and run `compiledwm`
 ```bash
 $ git clone https://github.com/savar95x/dwm
 $ cd dwm
