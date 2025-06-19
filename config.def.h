@@ -1,35 +1,37 @@
 /* See LICENSE file for copyright and license details. */
 
 #define TERMINAL "st"
-#define EMAIL "firefox 'https://gmail.com'"
+#define EMAIL "librewolf 'https://gmail.com'"
 //#define TORRENTCLIENT "(pgrep transmission-da &>/dev/null && transmission-qt) || (setsid -f transmission-daemon && transmission-qt)"
 #define TORRENTCLIENT "(pgrep transmission-da &>/dev/null && st -e tremc) || (setsid -f transmission-daemon && st -e tremc)"
 
 /* appearance */
-static const unsigned int borderpx  = 4;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 15;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 15;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 25;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 25;       /* vert outer gap between windows and screen edge */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int snap      = 22;       /* snap pixel */
+static const unsigned int single_ov = 80;
+static const unsigned int single_oh = 50;
+static const unsigned int gappih    = 7;        /* horiz inner gap between windows */
+static const unsigned int gappiv    = 7;        /* vert inner gap between windows */
+static const unsigned int gappoh    = 13;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 13;       /* vert outer gap between windows and screen edge */
 static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 4;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 10;        /* vertical padding for statusbar */
+static const int vertpadbar         = 20;        /* vertical padding for statusbar */
 static const char *fonts[]          = { "monospace:size=11", "Font Awesome 6 Free:style=solid:size=10.6" };
 static const char dmenufont[]       = "monospace:size=11";
-static const char col_gray1[]       = "#1C2021";
-static const char col_gray2[]       = "#303030";
+static const char col_gray1[]       = "#1D1F21"; // #1C2021
+static const char col_gray2[]       = "#373737";
 static const char col_gray3[]       = "#bdae93";
 static const char col_gray4[]       = "#BDAE93"/*"#fbf1c7"*/;
-static const char col_cyan[]        = "#393939";
+static const char col_cyan[]        = "#666666"; // #393939
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray1, col_gray3,  col_cyan  },
-	[SchemeTitle]  = { col_gray4, "#1C2021",  col_cyan  },
+	[SchemeTitle]  = { col_gray3, col_gray1,  col_cyan  },
 };
 
 /* tagging */
@@ -98,26 +100,27 @@ static const Key keys[] = {
 	/* modifier                     key        function        argument */
 //	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = dmenucmd } },
 //	{ MODKEY|ShiftMask,             XK_p,      spawn,          SHCMD("dmenu_run") },
-	{ MODKEY|ControlMask,		XK_space,  spawn,          SHCMD("dmenu_run") },
+//	{ MODKEY|ControlMask,		XK_space,  spawn,          SHCMD("dmenu_run") },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
 //	{ MODKEY,			XK_grave,  spawn,          SHCMD(TERMINAL " -c floating -e nvim $HOME/dox/note.tmp") },
 //	{ MODKEY|ShiftMask,             XK_tilde,  spawn,          SHCMD(TERMINAL " -e nvim $HOME/dox/note.tmp") },
 	{ MODKEY|ShiftMask,	     XK_BackSpace, spawn,          SHCMD("$HOME/.local/scripts/dmpowermenu")},
 	{ MODKEY,		     	XK_Insert, spawn,          SHCMD("$HOME/.local/bin/dmpassmenu --type")},
-	{  NULL ,          XF86XK_MonBrightnessUp, spawn,          SHCMD("light -A 2")},
-	{  NULL ,        XF86XK_MonBrightnessDown, spawn,          SHCMD("light -U 2")},
-	{  NULL ,         XF86XK_AudioLowerVolume, spawn,          SHCMD("$HOME/.local/scripts/sb_audio dec 2 && pkill -RTMIN+10 dwmblocks")},
-	{  NULL ,         XF86XK_AudioRaiseVolume, spawn,          SHCMD("$HOME/.local/scripts/sb_audio inc 2 && pkill -RTMIN+10 dwmblocks")},
-	{  NULL ,          	 XF86XK_AudioMute, spawn,          SHCMD("$HOME/.local/scripts/sb_audio toggle && pkill -RTMIN+10 dwmblocks")},
+	{     0 ,          XF86XK_MonBrightnessUp, spawn,          SHCMD("light -A 2")},
+	{     0 ,        XF86XK_MonBrightnessDown, spawn,          SHCMD("light -U 2")},
+	{     0 ,         XF86XK_AudioLowerVolume, spawn,          SHCMD("$HOME/.local/scripts/sb_audio dec 2 && pkill -RTMIN+10 dwmblocks")},
+	{     0 ,         XF86XK_AudioRaiseVolume, spawn,          SHCMD("$HOME/.local/scripts/sb_audio inc 2 && pkill -RTMIN+10 dwmblocks")},
+//	{  NULL ,          	 XF86XK_AudioMute, spawn,          SHCMD("$HOME/.local/scripts/sb_audio toggle && pkill -RTMIN+10 dwmblocks")},
 	{ MODKEY,                       XK_s,      spawn,          SHCMD("$HOME/.local/scripts/dmlscripts") },
 	{ MODKEY,			XK_w,      spawn,          SHCMD("$HOME/.local/scripts/dmweb")},
 	{ MODKEY,                       XK_e,      spawn,          SHCMD(EMAIL) },
 	{ MODKEY,                       XK_m,      spawn,          SHCMD(TERMINAL " -e ncmpcpp") },
 	{ MODKEY,                       XK_y,      spawn,          SHCMD(TERMINAL " -e ytfzf") },
 	{ MODKEY,                       XK_t,      spawn,          SHCMD(TORRENTCLIENT) },
-	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e lf") },
-	{ MODKEY,                       XK_p,      spawn,          SHCMD(TERMINAL " -e shellcaster") },
+	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e /home/savar/.local/bin/lfrun") },
+//	{ MODKEY,                       XK_p,      spawn,          SHCMD(TERMINAL " -e shellcaster") },
+	{ MODKEY,                       XK_p,      spawn,          SHCMD("dmenu_run") },
 	{ MODKEY,                       XK_n,      spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,      spawn,          SHCMD(TERMINAL " -e gotop") },
 	{ MODKEY,                       XK_c,      spawn,          SHCMD("pgrep xbanish && pkill xbanish || setsid -f xbanish -t 1")},
@@ -149,9 +152,9 @@ static const Key keys[] = {
 	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-//	{ MODKEY,			XK_q,      killclient,     {0} },
+	{ MODKEY,			XK_q,      killclient,     {0} },
 //	mod+shift+c for harder killclient
-	{ MODKEY|ShiftMask,		XK_c,      killclient,     {0} },
+//	{ MODKEY|ShiftMask,		XK_c,      killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -177,7 +180,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	//{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ShiftMask|ControlMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("$HOME/.local/scripts/dmpkillwm dwm") },
 	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("$HOME/.config/dwm/autostart.sh") },
 };

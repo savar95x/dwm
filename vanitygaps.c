@@ -796,6 +796,10 @@ tile(Monitor *m)
 	getgaps(m, &oh, &ov, &ih, &iv, &n);
 	if (n == 0)
 		return;
+	if (n == 1 && enablegaps) {
+		ov = single_ov;
+		oh = single_oh;
+	}
 
 	sx = mx = m->wx + ov;
 	sy = my = m->wy + oh;
