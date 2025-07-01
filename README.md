@@ -1,3 +1,9 @@
+## What I've added on my own
+- single client padding  
+- underline tag (the patch does not work)  
+the patches are in patches/  
+## what i plan on adding
+- per tag vanitygaps
 # Dynamic Window Manager
 My active build of suckless' dynamic window manager, that I named  
 ### (Dream of the) Endless
