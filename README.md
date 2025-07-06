@@ -3,6 +3,7 @@ My active build of suckless' dynamic window manager.
 ## preview
 ![preview](.assets/sky.png)  
 
+### install these as well
 [dwmblocks](https://github.com/savar95x/dwmblocks) - the statusbar  
 [dotfiles](https://github.com/savar95x/dotfiles) - my configs
 
