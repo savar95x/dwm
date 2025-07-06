@@ -12,6 +12,7 @@ The patches that I've used are in the `patches/` directory, do take a look if yo
 ### what i've added on my own
 - single client padding  
 - underline tag (the patch does not work)  
+
 the patches are in patches/  
 ### what i plan on adding
 - per tag vanitygaps  
