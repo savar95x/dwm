@@ -30,7 +30,10 @@ This should make and install dwm.
 I use startx from the console. Just make a file in the home of your user `.xinitrc` and add the following stuff
 ```bash
 #!/bin/sh
-exec dwm
+export XAUTHORITY="$HOME/.local/run/x11/xauth"
+setsid -f $HOME/.config/dwm/autostart.sh &
+export MYMENU="dmenu"
+exec dbus-launch dwm
 ```  
 And make this file `~/.xinitrc` executable  
 ```bash
