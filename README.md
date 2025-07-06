@@ -1,33 +1,31 @@
-## What I've added on my own
+# Dynamic Window Manager
+My active build of suckless' dynamic window manager.  
+## preview
+![preview](.assets/sky.png)  
+
+[dwmblocks](https://github.com/savar95x/dwmblocks) - the statusbar  
+[dotfiles](https://github.com/savar95x/dotfiles) - my configs
+
+<!--[reddit post](https://www.reddit.com/r/unixporn/comments/15sh6yw/dwm_dream_of_the_endless/)  -->
+## patches
+The patches that I've used are in the `patches/` directory, do take a look if you're curious  
+### what i've added on my own
 - single client padding  
 - underline tag (the patch does not work)  
 the patches are in patches/  
-## what i plan on adding
-- per tag vanitygaps
-# Dynamic Window Manager
-My active build of suckless' dynamic window manager, that I named  
-### (Dream of the) Endless
-![preview](.assets/endless.png)  
-Why the name? .. The astronaut in the space represents the endless universe out there. Plus I like The Sandman.  
-This is just the dwm source code. You can find the rest of the stuff (along with instrutions on how to implement them) below.  
+### what i plan on adding
+- per tag vanitygaps  
 
-[dwmblocks](https://github.com/savar95x/dwmblocks) - The statusbar  
-[dotfiles](https://github.com/savar95x/dotfiles) - Mostly the stuff stored in the .config directory  
-
-[reddit post](https://www.reddit.com/r/unixporn/comments/15sh6yw/dwm_dream_of_the_endless/)  
-### Patches
-The patches that I've used are in the `patches/` directory, do take a look if you're curious  
-
-## Installation
+## installation
 Clone this repo and run `compiledwm`
 ```bash
-$ git clone https://github.com/savar95x/dwm
-$ cd dwm
-$ ./compiledwm
+git clone https://github.com/savar95x/dwm
+cd dwm
+./compiledwm
 ```  
 This should make and install dwm.  
 
-## Launching
+## launching
 I use startx from the console. Just make a file in the home of your user `.xinitrc` and add the following stuff
 ```bash
 #!/bin/sh
