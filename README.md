@@ -1,7 +1,10 @@
 # Dynamic Window Manager
 My active build of suckless' dynamic window manager.  
 ## preview
-![preview](.assets/sky.png)  
+<div align=center>
+<img width=49% src=.assets/sky.png />
+<img width=49% src=.assets/sky2.png />
+</div>
 
 ### install these as well
 [dwmblocks](https://github.com/savar95x/dwmblocks) - the statusbar  
