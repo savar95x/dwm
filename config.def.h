@@ -8,12 +8,12 @@
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 22;       /* snap pixel */
-static const unsigned int single_ov = 80;
-static const unsigned int single_oh = 80;
-static const unsigned int gappih    = 8;        /* horiz inner gap between windows */
-static const unsigned int gappiv    = 8;        /* vert inner gap between windows */
-static const unsigned int gappoh    = 15;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 15;       /* vert outer gap between windows and screen edge */
+static const unsigned int single_ov = 20;
+static const unsigned int single_oh = 20;
+static const unsigned int gappih    = 10;        /* horiz inner gap between windows */
+static const unsigned int gappiv    = 10;        /* vert inner gap between windows */
+static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 // underlining
 static const unsigned int ulinepad	= 5;	/* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke	= 0;	/* thickness / height of the underline */
@@ -35,7 +35,7 @@ static const char col_cyan[]        = "#BDAE93"; // #393939
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray1, col_gray3,  col_cyan  },
+	[SchemeSel]  = { col_gray1, col_gray3,  "#555555"  },
 	[SchemeTitle]  = { col_gray3, col_gray1,  col_cyan  },
 };
 
@@ -109,8 +109,8 @@ static const Key keys[] = {
 //	{ MODKEY|ShiftMask,             XK_p,      spawn,          SHCMD("dmenu_run") },
 //	{ MODKEY|ControlMask,		XK_space,  spawn,          SHCMD("dmenu_run") },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_grave,  togglescratch,  {.v = scratchpadcmd } },
-	{ MODKEY,                       XK_grave,  spawn,          SHCMD(TERMINAL " -c floating -e lfrun ~/dox/notes/") },
+	{ MODKEY|ShiftMask,             XK_grave,  spawn,          SHCMD(TERMINAL " -e lfrun ~/dox/notes/") },
+	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
 //	{ MODKEY,			XK_grave,  spawn,          SHCMD(TERMINAL " -c floating -e nvim $HOME/dox/note.tmp") },
 //	{ MODKEY|ShiftMask,             XK_tilde,  spawn,          SHCMD(TERMINAL " -e nvim $HOME/dox/note.tmp") },
 	{ MODKEY|ShiftMask,	     XK_BackSpace, spawn,          SHCMD("$HOME/.local/scripts/dmpowermenu")},
