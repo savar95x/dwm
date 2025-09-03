@@ -8,12 +8,12 @@
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 22;       /* snap pixel */
-static const unsigned int single_ov = 20;
-static const unsigned int single_oh = 20;
+static const unsigned int single_oh = 108;
+static const unsigned int single_ov = 192;
 static const unsigned int gappih    = 10;        /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;        /* vert inner gap between windows */
-static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
+static const unsigned int gappoh    = single_oh;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = single_ov;       /* vert outer gap between windows and screen edge */
 // underlining
 static const unsigned int ulinepad	= 5;	/* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke	= 0;	/* thickness / height of the underline */
@@ -24,19 +24,27 @@ static const int swallowfloating    = 0;        /* 1 means swallow floating wind
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int horizpadbar        = 4;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 20;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "monospace:size=11", "Font Awesome 6 Free:style=solid:size=10.6" };
+static const int vertpadbar         = 15;        /* vertical padding for statusbar */
+static const char *fonts[]          = { "Inter:style=Medium:antialias=true:pixelsize=14", "symbols nerd font:size=12" };
 static const char dmenufont[]       = "monospace:size=11";
-static const char col_gray1[]       = "#1D1F21"; // #1C2021
+static const char col_gray1[]       = "#1e1e1e"; // #1C2021
 static const char col_gray2[]       = "#373737";
-static const char col_gray3[]       = "#bdae93";
-static const char col_gray4[]       = "#BDAE93"/*"#fbf1c7"*/;
-static const char col_cyan[]        = "#BDAE93"; // #393939
+static const char col_gray3[]       = "#ddc7a1";
+static const char col_gray4[]       = "#ddc7a1"/*"#fbf1c7"*/;
+static const char col_cyan[]        = "#ddc7a1"; // #393939
+static const unsigned int baralpha = 0xcc;
+static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray1, col_gray3,  "#555555"  },
 	[SchemeTitle]  = { col_gray3, col_gray1,  col_cyan  },
+};
+static const unsigned int alphas[][3]      = {
+    /*               fg      bg        border*/
+    [SchemeNorm] = { OPAQUE, baralpha, borderalpha },
+	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeTitle]  = { OPAQUE, baralpha,  borderalpha  }, // removing this array would have weird behaviour with title bg color
 };
 
 /* tagging */
@@ -159,6 +167,7 @@ static const Key keys[] = {
 	{ MODKEY|Mod1Mask,              XK_9,      incrovgaps,     {.i = +1 } },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_9,      incrovgaps,     {.i = -1 } },
 	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
+	//{ MODKEY|ControlMask,           XK_g,      togglegaps,     {0} },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,			XK_q,      killclient,     {0} },

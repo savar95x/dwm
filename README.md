@@ -16,9 +16,13 @@ The patches that I've used are in the `patches/` directory, do take a look if yo
 ### what i've added on my own
 - single client padding  
 - underline tag (the patch does not work)  
+- drw_fontset_free() from original dwm/drw.c \[dunno which patch removed it and why\],
+- and making alpha and titlecolor work together \[just a parallel third subarray in alphas\[\]\[3\] surprisingly fixed it\]
 
 the patches are in patches/  
 ### what i plan on adding
+- write a function that applies gaps in real time and bind them to 2-3 presets  
+- apply restart patch  
 - per tag vanitygaps  
 
 ## installation
