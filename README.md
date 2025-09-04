@@ -18,12 +18,20 @@ The patches that I've used are in the `patches/` directory, do take a look if yo
 - underline tag (the patch does not work)  
 - drw_fontset_free() from original dwm/drw.c \[dunno which patch removed it and why\],
 - and making alpha and titlecolor work together \[just a parallel third subarray in alphas\[\]\[3\] surprisingly fixed it\]
+- wrote a toggle between tile and monocle, and replaced it with current fullscreen (independent of slemon->showbar)
+- enablegaps flag for each tag, gives the illusion of each tag having a memory of it's own, where in actuality it only has this flag which we check while applying gaps on windows (or maybe just add another flag to toggle between 2 preset defaults)  
+steps:  
+apply pertag vanity from here https://github.com/jitessh/voidwm/commit/e8393a42f2f0f1fcbcbd61a819fd936a1245e1ed, this gives each tag their enablegaps flag  
+getgaps() change calculations for !enablegaps to make it retain innergaps for outergaps, and do not change innergaps  
+implement biggaps similar to enablegaps as a flag for 2 different gap settings, per tag  
+also added resetgaps() func.  
 
 the patches are in patches/  
 ### what i plan on adding
-- write a function that applies gaps in real time and bind them to 2-3 presets  
+- modify biggaps implementation to have dynamic number of presets (more elegent)  
+- make enablegaps and biggaps have the same precendece (implementation needs to be more than just flags then, we should also know which flag has been set latest, or pass it as argument)  
+- add pertag gaps implementation because it is bugging me, and even tho it might be too bloated, it will allow me to set pertag gaps on the fly, and maybe even not need any flags.  
 - apply restart patch  
-- per tag vanitygaps  
 
 ## installation
 Clone this repo and run `compiledwm`

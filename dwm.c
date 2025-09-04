@@ -135,6 +135,7 @@ struct Monitor {
 	int gappiv;           /* vertical gap between windows */
 	int gappoh;           /* horizontal outer gaps */
 	int gappov;           /* vertical outer gaps */
+	unsigned int gaps2[4]; // second set of gaps
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
@@ -225,7 +226,6 @@ static void setclientstate(Client *c, long state);
 static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
 static void fullscreen(const Arg *arg);
-static void cyclemonotile(const Arg *arg);
 static void setlayout(const Arg *arg);
 static void setcfact(const Arg *arg);
 static void setmfact(const Arg *arg);
@@ -242,6 +242,9 @@ static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void togglescratch(const Arg *arg);
 static void toggletag(const Arg *arg);
+static void togglegaps(const Arg *arg);
+static void togglepresetgaps(const Arg *arg);
+static void resetgaps(const Arg *arg);
 static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus);
 static void unmanage(Client *c, int destroyed);
@@ -267,6 +270,7 @@ static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void xinitvisual();
 static void zoom(const Arg *arg);
 
+static void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc);
 static pid_t getparentprocess(pid_t p);
 static int isdescprocess(pid_t p, pid_t c);
 static Client *swallowingclient(Window w);
@@ -329,6 +333,10 @@ struct Pertag {
 	unsigned int sellts[LENGTH(tags) + 1]; /* selected layouts */
 	const Layout *ltidxs[LENGTH(tags) + 1][2]; /* matrix of tags and layouts indexes  */
 	int showbars[LENGTH(tags) + 1]; /* display bar for the current tag */
+	#if PERTAG_VANITYGAPS
+	int enablegaps[LENGTH(tags) + 1]; /* vanitygaps per tag */
+	int biggaps[LENGTH(tags) + 1]; /* vanitygaps per tag */
+	#endif // PERTAG_VANITYGAPS
 };
 
 /* compile-time check if all tags fit into an unsigned int bit array. */
@@ -786,6 +794,10 @@ createmon(void)
 	m->gappiv = gappiv;
 	m->gappoh = gappoh;
 	m->gappov = gappov;
+	m->gaps2[0] = gaps2[0];
+	m->gaps2[1] = gaps2[1];
+	m->gaps2[2] = gaps2[2];
+	m->gaps2[3] = gaps2[3];
 	m->lt[0] = &layouts[0];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
@@ -795,6 +807,11 @@ createmon(void)
 	for (i = 0; i <= LENGTH(tags); i++) {
 		m->pertag->nmasters[i] = m->nmaster;
 		m->pertag->mfacts[i] = m->mfact;
+
+		#if PERTAG_VANITYGAPS
+		m->pertag->enablegaps[i] = enablegaps;
+		m->pertag->biggaps[i] = biggaps;
+		#endif // PERTAG_VANITYGAPS
 
 		m->pertag->ltidxs[i][0] = m->lt[0];
 		m->pertag->ltidxs[i][1] = m->lt[1];
@@ -1179,6 +1196,51 @@ getatomprop(Client *c, Atom prop)
 	}
 	return atom;
 }
+
+
+void
+getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc)
+{
+	unsigned int n, oe, bg;
+	#if PERTAG_VANITYGAPS
+	oe = selmon->pertag->enablegaps[selmon->pertag->curtag];
+	bg = selmon->pertag->biggaps[selmon->pertag->curtag];
+	#else
+	oe = enablegaps;
+	bg = biggaps;
+	#endif // PERTAG_VANITYGAPS
+	Client *c;
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if (smartgaps && n == 1) {
+		oe = 0; // outer gaps disabled when only one client
+	}
+
+	// inner gaps remain the same irrespective of oe and bg
+	*ih = m->gappih; // inner horizontal gap
+	*iv = m->gappiv; // inner vertical gap
+
+	if (oe == 0) { // if !enablegaps, make the edge gaps same as inner gaps
+		*oh = m->gappih; // outer horizontal gap
+		*ov = m->gappiv; // outer vertical gap
+	} else if (bg == 0) {
+		*oh = m->gaps2[0]; // outer horizontal gap
+		*ov = m->gaps2[1]; // outer vertical gap
+		*ih = m->gaps2[2]; // inner horizontal gap
+		*iv = m->gaps2[3]; // inner vertical gap
+	} else {
+		*oh = m->gappoh; // outer horizontal gap
+		*ov = m->gappov; // outer vertical gap
+	}
+
+	/*
+	*oh = m->gappoh*oe; // outer horizontal gap
+	*ov = m->gappov*oe; // outer vertical gap
+	*ih = m->gappih*ie; // inner horizontal gap
+	*iv = m->gappiv*ie; // inner vertical gap
+	*/
+	*nc = n;            // number of clients
+}
+
 
 pid_t
 getstatusbarpid()
@@ -1883,15 +1945,15 @@ setfullscreen(Client *c, int fullscreen)
 
 Layout *last_layout;
 void
-fullscreen(const Arg *arg)
+fullscreen(const Arg *arg) // probably works correct, not sure (goal is to toggle between monocle and the last layout independent of togglebar)
 {
-	if (selmon->showbar) {
+	if (selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt] != &layouts[2]) {
 		for(last_layout = (Layout *)layouts; last_layout != selmon->lt[selmon->sellt]; last_layout++);
 		setlayout(&((Arg) { .v = &layouts[2] }));
 	} else {
 		setlayout(&((Arg) { .v = last_layout }));
 	}
-	togglebar(arg);
+	//togglebar(arg);
 }
 
 void
@@ -2193,6 +2255,43 @@ toggletag(const Arg *arg)
 		arrange(selmon);
 	}
 }
+
+void
+togglegaps(const Arg *arg)
+{
+	#if PERTAG_VANITYGAPS
+	selmon->pertag->enablegaps[selmon->pertag->curtag] = !selmon->pertag->enablegaps[selmon->pertag->curtag];
+	#else
+	enablegaps = !enablegaps;
+	#endif // PERTAG_VANITYGAPS
+	arrange(NULL);
+}
+
+void
+togglepresetgaps(const Arg *arg)
+{
+	#if PERTAG_VANITYGAPS
+	selmon->pertag->biggaps[selmon->pertag->curtag] = !selmon->pertag->biggaps[selmon->pertag->curtag];
+	#else
+	biggaps = !biggaps;
+	#endif // PERTAG_VANITYGAPS
+	arrange(NULL);
+}
+
+void
+resetgaps(const Arg *arg)
+{
+	#if PERTAG_VANITYGAPS
+	selmon->pertag->enablegaps[selmon->pertag->curtag] = 1;
+	selmon->pertag->biggaps[selmon->pertag->curtag] = 1;
+	#else
+	enablegaps = 1;
+	biggaps = 1;
+	#endif // PERTAG_VANITYGAPS
+	setgaps(gappoh, gappov, gappih, gappiv);
+	arrange(NULL);
+}
+
 
 void
 toggleview(const Arg *arg)

@@ -1,5 +1,4 @@
 /* Key binding functions */
-static void defaultgaps(const Arg *arg);
 static void incrgaps(const Arg *arg);
 static void incrigaps(const Arg *arg);
 static void incrogaps(const Arg *arg);
@@ -7,7 +6,6 @@ static void incrohgaps(const Arg *arg);
 static void incrovgaps(const Arg *arg);
 static void incrihgaps(const Arg *arg);
 static void incrivgaps(const Arg *arg);
-static void togglegaps(const Arg *arg);
 /* Layouts (delete the ones you do not need) */
 static void bstack(Monitor *m);
 static void bstackhoriz(Monitor *m);
@@ -21,14 +19,8 @@ static void nrowgrid(Monitor *m);
 static void spiral(Monitor *m);
 static void tile(Monitor *m);
 /* Internals */
-static void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc);
 static void getfacts(Monitor *m, int msize, int ssize, float *mf, float *sf, int *mr, int *sr);
 static void setgaps(int oh, int ov, int ih, int iv);
-
-/* Settings */
-#if !PERTAG_PATCH
-static int enablegaps = 1;
-#endif // PERTAG_PATCH
 
 void
 setgaps(int oh, int ov, int ih, int iv)
@@ -43,23 +35,6 @@ setgaps(int oh, int ov, int ih, int iv)
 	selmon->gappih = ih;
 	selmon->gappiv = iv;
 	arrange(selmon);
-}
-
-void
-togglegaps(const Arg *arg)
-{
-	#if PERTAG_PATCH
-	selmon->pertag->enablegaps[selmon->pertag->curtag] = !selmon->pertag->enablegaps[selmon->pertag->curtag];
-	#else
-	enablegaps = !enablegaps;
-	#endif // PERTAG_PATCH
-	arrange(NULL);
-}
-
-void
-defaultgaps(const Arg *arg)
-{
-	setgaps(gappoh, gappov, gappih, gappiv);
 }
 
 void
@@ -137,29 +112,6 @@ incrivgaps(const Arg *arg)
 		selmon->gappih,
 		selmon->gappiv + arg->i
 	);
-}
-
-void
-getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc)
-{
-	unsigned int n, oe, ie;
-	#if PERTAG_PATCH
-	oe = ie = selmon->pertag->enablegaps[selmon->pertag->curtag];
-	#else
-	oe = ie = enablegaps;
-	#endif // PERTAG_PATCH
-	Client *c;
-
-	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
-	if (smartgaps && n == 1) {
-		oe = 0; // outer gaps disabled when only one client
-	}
-
-	*oh = m->gappoh*oe; // outer horizontal gap
-	*ov = m->gappov*oe; // outer vertical gap
-	*ih = m->gappih*ie; // inner horizontal gap
-	*iv = m->gappiv*ie; // inner vertical gap
-	*nc = n;            // number of clients
 }
 
 void
@@ -796,10 +748,11 @@ tile(Monitor *m)
 	getgaps(m, &oh, &ov, &ih, &iv, &n);
 	if (n == 0)
 		return;
-	if (n == 1 && enablegaps) {
-		ov = single_ov;
-		oh = single_oh;
-	}
+	// separate padding for single client
+	//if (n == 1 && enablegaps) {
+		//ov = single_ov;
+		//oh = single_oh;
+	//}
 
 	sx = mx = m->wx + ov;
 	sy = my = m->wy + oh;

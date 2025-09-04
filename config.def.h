@@ -1,40 +1,50 @@
 /* See LICENSE file for copyright and license details. */
 
+#define PERTAG_VANITYGAPS 1
+
 #define TERMINAL "st"
 #define EMAIL "librewolf 'https://gmail.com'"
 //#define TORRENTCLIENT "(pgrep transmission-da &>/dev/null && transmission-qt) || (setsid -f transmission-daemon && transmission-qt)"
 #define TORRENTCLIENT "(pgrep transmission-da &>/dev/null && st -e tremc) || (setsid -f transmission-daemon && st -e tremc)"
 
 /* appearance */
-static const unsigned int borderpx  = 0;        /* border pixel of windows */
-static const unsigned int snap      = 22;       /* snap pixel */
-static const unsigned int single_oh = 108;
-static const unsigned int single_ov = 192;
-static const unsigned int gappih    = 10;        /* horiz inner gap between windows */
-static const unsigned int gappiv    = 10;        /* vert inner gap between windows */
-static const unsigned int gappoh    = single_oh;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = single_ov;       /* vert outer gap between windows and screen edge */
+static const unsigned int borderpx       = 0;                          /* border pixel of windows */
+static const unsigned int snap           = 22;                         /* snap pixel */
+static const unsigned int single_oh      = 108;                        // for now unsued, since i have a toggle for preset gaps
+static const unsigned int single_ov      = 192;
+static const unsigned int gappih         = 10;                         /* horiz inner gap between windows */
+static const unsigned int gappiv         = 10;                         /* vert inner gap between windows */
+static const unsigned int gappoh         = single_oh;                  /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov         = single_ov;                  /* vert outer gap between windows and screen edge */
+static const unsigned int gaps2[]        = {                          // {gappoh, gappov, gappih, gappiv}
+	80, // gappoh
+	60, // gappov
+	gappih, // gappih
+	gappiv // gappiv
+};
 // underlining
 static const unsigned int ulinepad	= 5;	/* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke	= 0;	/* thickness / height of the underline */
 static const unsigned int ulinevoffset	= 0;	/* how far above the bottom of the bar the line should appear */
 static const int ulineall 		= 0;	/* 1 to show underline on all tags, 0 for just the active ones */
-static       int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
-static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
-static const int horizpadbar        = 4;        /* horizontal padding for statusbar */
-static const int vertpadbar         = 15;        /* vertical padding for statusbar */
-static const char *fonts[]          = { "Inter:style=Medium:antialias=true:pixelsize=14", "symbols nerd font:size=12" };
-static const char dmenufont[]       = "monospace:size=11";
-static const char col_gray1[]       = "#1e1e1e"; // #1C2021
-static const char col_gray2[]       = "#373737";
-static const char col_gray3[]       = "#ddc7a1";
-static const char col_gray4[]       = "#ddc7a1"/*"#fbf1c7"*/;
-static const char col_cyan[]        = "#ddc7a1"; // #393939
-static const unsigned int baralpha = 0xcc;
-static const unsigned int borderalpha = OPAQUE;
-static const char *colors[][3]      = {
+static       int smartgaps              = 0;        /* 1 means no outer gap when there is only one window */
+static       int enablegaps             = 1;
+static       int biggaps                = 1;
+static const int swallowfloating        = 0;        /* 1 means swallow floating windows by default */
+static const int showbar                = 1;        /* 0 means no bar */
+static const int topbar                 = 1;        /* 0 means bottom bar */
+static const int horizpadbar            = 4;        /* horizontal padding for statusbar */
+static const int vertpadbar             = 15;        /* vertical padding for statusbar */
+static const char *fonts[]              = { "Inter:style=Medium:antialias=true:pixelsize=14", "symbols nerd font:size=12" };
+static const char dmenufont[]           = "Inter:style=Medium:antialias=true:pixelsize=14";
+static const char col_gray1[]           = "#1e1e1e"; // #1C2021
+static const char col_gray2[]           = "#373737";
+static const char col_gray3[]           = "#ddc7a1";
+static const char col_gray4[]           = "#ddc7a1"/*"#fbf1c7"*/;
+static const char col_cyan[]            = "#ddc7a1"; // #393939
+static const unsigned int baralpha      = 0xdd;
+static const unsigned int borderalpha   = OPAQUE;
+static const char *colors[][3]          = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray1, col_gray3,  "#555555"  },
@@ -112,97 +122,98 @@ static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "100x25", NULL };
 
 static const Key keys[] = {
-	/* modifier                     key        function        argument */
-//	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = dmenucmd } },
-//	{ MODKEY|ShiftMask,             XK_p,      spawn,          SHCMD("dmenu_run") },
-//	{ MODKEY|ControlMask,		XK_space,  spawn,          SHCMD("dmenu_run") },
-	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_grave,  spawn,          SHCMD(TERMINAL " -e lfrun ~/dox/notes/") },
-	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
-//	{ MODKEY,			XK_grave,  spawn,          SHCMD(TERMINAL " -c floating -e nvim $HOME/dox/note.tmp") },
-//	{ MODKEY|ShiftMask,             XK_tilde,  spawn,          SHCMD(TERMINAL " -e nvim $HOME/dox/note.tmp") },
-	{ MODKEY|ShiftMask,	     XK_BackSpace, spawn,          SHCMD("$HOME/.local/scripts/dmpowermenu")},
-	{ MODKEY|ShiftMask,             XK_s,      spawn,          SHCMD("$HOME/.local/scripts/takess")},
-	{ MODKEY,		     	XK_Insert, spawn,          SHCMD("$HOME/.local/bin/dmpassmenu --type")},
-	{     0 ,          XF86XK_MonBrightnessUp, spawn,          SHCMD("light -A 2 && pkill -RTMIN+13 dwmblocks")},
-	{     0 ,        XF86XK_MonBrightnessDown, spawn,          SHCMD("light -U 2 && pkill -RTMIN+13 dwmblocks")},
-	{     0 ,         XF86XK_AudioLowerVolume, spawn,          SHCMD("$HOME/.local/scripts/sb_audio dec 2 && pkill -RTMIN+10 dwmblocks")},
-	{     0 ,         XF86XK_AudioRaiseVolume, spawn,          SHCMD("$HOME/.local/scripts/sb_audio inc 2 && pkill -RTMIN+10 dwmblocks")},
-	{     0 ,          	 XF86XK_AudioMute, spawn,          SHCMD("$HOME/.local/scripts/sb_audio toggle && pkill -RTMIN+10 dwmblocks")},
-	{ MODKEY,                       XK_s,      spawn,          SHCMD("$HOME/.local/scripts/dmlscripts") },
-	{ MODKEY,                       XK_w,      spawn,          SHCMD("$HOME/.local/scripts/dmweb")},
-	{ MODKEY,                       XK_e,      spawn,          SHCMD(EMAIL) },
-	{ MODKEY,                       XK_m,      spawn,          SHCMD(TERMINAL " -e ncmpcpp") },
-	{ MODKEY,                       XK_y,      spawn,          SHCMD(TERMINAL " -e ytfzf") },
-	{ MODKEY,                       XK_t,      spawn,          SHCMD(TORRENTCLIENT) },
-	{ MODKEY,                       XK_r,      spawn,          SHCMD(TERMINAL " -e /home/savar/.local/bin/lfrun") },
-//	{ MODKEY,                       XK_p,      spawn,          SHCMD(TERMINAL " -e shellcaster") },
-	{ MODKEY,                       XK_p,      spawn,          SHCMD("dmenu_run") },
-	{ MODKEY,                       XK_n,      spawn,          SHCMD(TERMINAL " -e newsboat") },
-	{ MODKEY,                       XK_g,      spawn,          SHCMD(TERMINAL " -e gotop") },
-	{ MODKEY,                       XK_c,      spawn,          SHCMD("pgrep xbanish && pkill xbanish || setsid -f xbanish -t 1")},
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_h,      setcfact,       {.f = +0.25} },
-	{ MODKEY|ShiftMask,             XK_l,      setcfact,       {.f = -0.25} },
-	{ MODKEY|ShiftMask,             XK_o,      setcfact,       {.f =  0.00} },
-	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
-	{ MODKEY|Mod1Mask,              XK_u,      incrgaps,       {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_u,      incrgaps,       {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_i,      incrigaps,      {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,      incrigaps,      {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_o,      incrogaps,      {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_o,      incrogaps,      {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_6,      incrihgaps,     {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_6,      incrihgaps,     {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_7,      incrivgaps,     {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_7,      incrivgaps,     {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_8,      incrohgaps,     {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_8,      incrohgaps,     {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_9,      incrovgaps,     {.i = +1 } },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_9,      incrovgaps,     {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
-	//{ MODKEY|ControlMask,           XK_g,      togglegaps,     {0} },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,			XK_q,      killclient,     {0} },
-	{ MODKEY|ControlMask,		XK_comma,  cyclelayout,    {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
-//	mod+shift+c for harder killclient
-//	{ MODKEY|ShiftMask,		XK_c,      killclient,     {0} },
-	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_f,      fullscreen,     {0} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,                       XK_bracketright,  viewnext,       {0} },
-	{ MODKEY,                       XK_bracketleft,   viewprev,       {0} },
-	{ MODKEY|ShiftMask,             XK_bracketright,  tagtonext,      {0} },
-	{ MODKEY|ShiftMask,             XK_bracketleft,   tagtoprev,      {0} },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask|ControlMask, XK_q,      quit,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,      spawn,          SHCMD("$HOME/.local/scripts/dmpkillwm dwm") },
-	{ MODKEY|ShiftMask,             XK_r,      spawn,          SHCMD("$HOME/.config/dwm/autostart.sh") },
+	/* modifier                     key                       function        argument */
+//	{ MODKEY|ShiftMask,             XK_p,                     spawn,          {.v = dmenucmd } },
+//	{ MODKEY|ShiftMask,             XK_p,                     spawn,          SHCMD("dmenu_run") },
+//	{ MODKEY|ControlMask,		XK_space,                 spawn,          SHCMD("dmenu_run") },
+	{ MODKEY,                       XK_Return,                spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_grave,                 spawn,          SHCMD(TERMINAL " -e lfrun ~/dox/notes/") },
+	{ MODKEY,                       XK_grave,                 togglescratch,  {.v = scratchpadcmd } },
+//	{ MODKEY,			XK_grave,                 spawn,          SHCMD(TERMINAL " -c floating -e nvim $HOME/dox/note.tmp") },
+//	{ MODKEY|ShiftMask,             XK_tilde,                 spawn,          SHCMD(TERMINAL " -e nvim $HOME/dox/note.tmp") },
+	{ MODKEY|ShiftMask,	        XK_BackSpace,             spawn,          SHCMD("$HOME/.local/scripts/dmpowermenu")},
+	{ MODKEY|ShiftMask,             XK_s,                     spawn,          SHCMD("$HOME/.local/scripts/takess")},
+	{ MODKEY,		     	XK_Insert,                spawn,          SHCMD("$HOME/.local/bin/dmpassmenu --type")},
+	{     0 ,                       XF86XK_MonBrightnessUp,   spawn,          SHCMD("~/.config/dwm/scripts/bar/bright A 2")},
+	{     0 ,                       XF86XK_MonBrightnessDown, spawn,          SHCMD("~/.config/dwm/scripts/bar/bright U 2")},
+//	{     0 ,                       XF86XK_MonBrightnessUp,   spawn,          SHCMD("light -A 2 && pkill -RTMIN+13 dwmblocks")},
+	{     0 ,                       XF86XK_AudioLowerVolume,  spawn,          SHCMD("~/.config/dwm/scripts/bar/vol d 2 140")},
+	{     0 ,                       XF86XK_AudioRaiseVolume,  spawn,          SHCMD("~/.config/dwm/scripts/bar/vol i 2 140")},
+	{     0 ,                       XF86XK_AudioMute,         spawn,          SHCMD("~/.config/dwm/scripts/bar/vol t")},
+//	{     0 ,                       XF86XK_AudioRaiseVolume,  spawn,          SHCMD("$HOME/.local/scripts/sb_audio inc 2 && pkill -RTMIN+10 dwmblocks")},
+	{ MODKEY,                       XK_s,                     spawn,          SHCMD("$HOME/.local/scripts/dmlscripts") },
+	{ MODKEY,                       XK_w,                     spawn,          SHCMD("$HOME/.local/scripts/dmweb")},
+	{ MODKEY,                       XK_e,                     spawn,          SHCMD(EMAIL) },
+	{ MODKEY,                       XK_m,                     spawn,          SHCMD(TERMINAL " -e ncmpcpp") },
+	{ MODKEY,                       XK_y,                     spawn,          SHCMD(TERMINAL " -e ytfzf") },
+	{ MODKEY,                       XK_t,                     spawn,          SHCMD(TORRENTCLIENT) },
+	{ MODKEY,                       XK_r,                     spawn,          SHCMD(TERMINAL " -e /home/savar/.local/bin/lfrun") },
+//	{ MODKEY,                       XK_p,                     spawn,          SHCMD(TERMINAL " -e shellcaster") },
+	{ MODKEY,                       XK_p,                     spawn,          SHCMD("dmenu_run") },
+	{ MODKEY,                       XK_n,                     spawn,          SHCMD(TERMINAL " -e newsboat") },
+	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
+	{ MODKEY,                       XK_c,                     spawn,          SHCMD("pgrep xbanish && pkill xbanish || setsid -f xbanish -t 1")},
+	{ MODKEY,                       XK_b,                     togglebar,      {0} },
+	{ MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_k,                     focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_i,                     incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_d,                     incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_h,                     setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,                     setmfact,       {.f = +0.05} },
+	{ MODKEY|ShiftMask,             XK_h,                     setcfact,       {.f = +0.25} },
+	{ MODKEY|ShiftMask,             XK_l,                     setcfact,       {.f = -0.25} },
+	{ MODKEY|ShiftMask,             XK_o,                     setcfact,       {.f =  0.00} },
+	{ MODKEY|ShiftMask,             XK_Return,                zoom,           {0} },
+//	{ MODKEY|Mod1Mask,              XK_u,                     incrgaps,       {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_u,                     incrgaps,       {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_i,                     incrigaps,      {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,                     incrigaps,      {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_o,                     incrogaps,      {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_o,                     incrogaps,      {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_6,                     incrihgaps,     {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_6,                     incrihgaps,     {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_7,                     incrivgaps,     {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_7,                     incrivgaps,     {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_8,                     incrohgaps,     {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_8,                     incrohgaps,     {.i = -1 } },
+//	{ MODKEY|Mod1Mask,              XK_9,                     incrovgaps,     {.i = +1 } },
+//	{ MODKEY|Mod1Mask|ShiftMask,    XK_9,                     incrovgaps,     {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_g,                     togglegaps,     {0} }, // toggles the enablegap flag
+	{ MODKEY|ShiftMask,             XK_g,                     togglepresetgaps,{0} }, // toggles between the preset gaps
+	{ MODKEY|ShiftMask|ControlMask, XK_g,                     resetgaps,      {0} }, // toggles between the preset gaps
+
+	{ MODKEY,                       XK_Tab,                   view,           {0} },
+	{ MODKEY,			XK_q,                     killclient,     {0} },
+	{ MODKEY|ControlMask,		XK_comma,                 cyclelayout,    {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_period,                cyclelayout,    {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_t,                     setlayout,      {.v = &layouts[0]} },
+	{ MODKEY|ShiftMask,             XK_f,                     setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_m,                     setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_f,                     fullscreen,     {0} },
+	{ MODKEY,                       XK_space,                 setlayout,      {0} },
+	{ MODKEY|ShiftMask,             XK_space,                 togglefloating, {0} },
+	{ MODKEY,                       XK_0,                     view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,                     tag,            {.ui = ~0 } },
+	{ MODKEY,                       XK_comma,                 focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_period,                focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,                 tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period,                tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_bracketright,          viewnext,       {0} },
+	{ MODKEY,                       XK_bracketleft,           viewprev,       {0} },
+	{ MODKEY|ShiftMask,             XK_bracketright,          tagtonext,      {0} },
+	{ MODKEY|ShiftMask,             XK_bracketleft,           tagtoprev,      {0} },
+	TAGKEYS(                        XK_1,                                     0)
+	TAGKEYS(                        XK_2,                                     1)
+	TAGKEYS(                        XK_3,                                     2)
+	TAGKEYS(                        XK_4,                                     3)
+	TAGKEYS(                        XK_5,                                     4)
+	TAGKEYS(                        XK_6,                                     5)
+	TAGKEYS(                        XK_7,                                     6)
+	TAGKEYS(                        XK_8,                                     7)
+	TAGKEYS(                        XK_9,                                     8)
+	{ MODKEY|ShiftMask|ControlMask, XK_q,                     quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_q,                     spawn,          SHCMD("$HOME/.local/scripts/dmpkillwm dwm") },
+	{ MODKEY|ShiftMask,             XK_r,                     spawn,          SHCMD("$HOME/.config/dwm/autostart.sh") },
 };
 
 /* button definitions */
