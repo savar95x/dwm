@@ -28,6 +28,7 @@ also added resetgaps() func.
 
 the patches are in patches/  
 ### what i plan on adding
+- patch the pango patch use variable fonts esp with battery
 - modify biggaps implementation to have dynamic number of presets (more elegent)  
 - make enablegaps and biggaps have the same precendece (implementation needs to be more than just flags then, we should also know which flag has been set latest, or pass it as argument)  
 - add pertag gaps implementation because it is bugging me, and even tho it might be too bloated, it will allow me to set pertag gaps on the fly, and maybe even not need any flags.  
