@@ -34,9 +34,9 @@ static const int swallowfloating        = 0;        /* 1 means swallow floating 
 static const int showbar                = 1;        /* 0 means no bar */
 static const int topbar                 = 1;        /* 0 means bottom bar */
 static const int horizpadbar            = 4;        /* horizontal padding for statusbar */
-static const int vertpadbar             = 15;        /* vertical padding for statusbar */
-static const char *fonts[]              = { "Inter:style=Medium:antialias=true:pixelsize=14", "symbols nerd font:size=12" };
-static const char dmenufont[]           = "Inter:style=Medium:antialias=true:pixelsize=14";
+static const int vertpadbar             = 12;        /* vertical padding for statusbar */
+//static const char *fonts[]              = { "Inter:style=Regular:antialias=true:size=12", "symbols nerd font:size=12" };
+static const char *fonts[]              = { "Inter:style=Medium:antialias=true:size=11", "symbols nerd font:size=12" };
 static const char col_gray1[]           = "#1e1e1e"; // #1C2021
 static const char col_gray2[]           = "#373737";
 static const char col_gray3[]           = "#ddc7a1";
@@ -116,7 +116,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "100x25", NULL };
