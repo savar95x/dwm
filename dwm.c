@@ -1950,8 +1950,12 @@ fullscreen(const Arg *arg) // probably works correct, not sure (goal is to toggl
 	if (selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt] != &layouts[2]) {
 		for(last_layout = (Layout *)layouts; last_layout != selmon->lt[selmon->sellt]; last_layout++);
 		setlayout(&((Arg) { .v = &layouts[2] }));
+		if (selmon->showbar)
+			togglebar(arg);
 	} else {
 		setlayout(&((Arg) { .v = last_layout }));
+		if (!selmon->showbar)
+			togglebar(arg);
 	}
 	//togglebar(arg);
 }
