@@ -2,8 +2,12 @@
 My active build of suckless' dynamic window manager.  
 ## preview
 <div align=center>
-<img width=49% src=.assets/sky.png />
-<img width=49% src=.assets/sky2.png />
+<img width=49% src=.assets/1.png />
+<img width=49% src=.assets/2.png />
+</div>
+<div align=center>
+<img width=49% src=.assets/3.png />
+<img width=49% src=.assets/4.png />
 </div>
 
 ### install these as well
