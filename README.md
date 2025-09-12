@@ -1,6 +1,6 @@
 # Dynamic Window Manager
-My active build of suckless' dynamic window manager.  
-## preview
+My active build of suckless's dynamic window manager.  
+## Preview
 <div align=center>
 <img width=49% src=.assets/1.png />
 <img width=49% src=.assets/2.png />
@@ -10,14 +10,20 @@ My active build of suckless' dynamic window manager.
 <img width=49% src=.assets/4.png />
 </div>
 
-### install these as well
-[dwmblocks](https://github.com/savar95x/dwmblocks) - the statusbar  
-[dotfiles](https://github.com/savar95x/dotfiles) - my configs
+## Installation
+```bash
+git clone https://github.com/savar95x/dwm savar95x-dwm/
+cd savar95x-dwm/
+./compiledwm
+```
+You would also want to install [my dwmblocks build](https://github.com/savar95/dwmblocks) for those nice looking bar modules on the top right.  
+And my correspoding dotfiles including the configs and the scripts are over [here](https://github.com/savar95x/dotfiles)  
 
 <!--[reddit post](https://www.reddit.com/r/unixporn/comments/15sh6yw/dwm_dream_of_the_endless/)  -->
-## patches
+## Features
+### Patches
 The patches that I've used are in the `patches/` directory, do take a look if you're curious  
-### what i've added on my own
+### What I've added on my own
 - single client padding  
 - underline tag (the patch does not work)  
 - drw_fontset_free() from original dwm/drw.c \[dunno which patch removed it and why\],
@@ -31,23 +37,14 @@ implement biggaps similar to enablegaps as a flag for 2 different gap settings, 
 also added resetgaps() func.  
 
 the patches are in patches/  
-### what i plan on adding
+### What I plan on adding
 - patch the pango patch use variable fonts esp with battery
 - modify biggaps implementation to have dynamic number of presets (more elegent)  
 - make enablegaps and biggaps have the same precendece (implementation needs to be more than just flags then, we should also know which flag has been set latest, or pass it as argument)  
 - add pertag gaps implementation because it is bugging me, and even tho it might be too bloated, it will allow me to set pertag gaps on the fly, and maybe even not need any flags.  
 - apply restart patch  
 
-## installation
-Clone this repo and run `compiledwm`
-```bash
-git clone https://github.com/savar95x/dwm
-cd dwm
-./compiledwm
-```  
-This should make and install dwm.  
-
-## launching
+## Launching
 I use startx from the console. Just make a file in the home of your user `.xinitrc` and add the following stuff
 ```bash
 #!/bin/sh
