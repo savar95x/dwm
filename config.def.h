@@ -35,14 +35,13 @@ static const int showbar                = 1;        /* 0 means no bar */
 static const int topbar                 = 1;        /* 0 means bottom bar */
 static const int horizpadbar            = 4;        /* horizontal padding for statusbar */
 static const int vertpadbar             = 12;        /* vertical padding for statusbar */
-//static const char *fonts[]              = { "Inter:style=Regular:antialias=true:size=12", "symbols nerd font:size=12" };
-static const char *fonts[]              = { "Inter:style=Medium:antialias=true:size=11", "symbols nerd font:size=12" };
+static const char *fonts[]              = { "Inter:style=Medium:antialias=true:size=11.5", "Font Awesome 7 Free:style=solid:size=11.5", "symbols nerd font:size=13.5" };
 static const char col_gray1[]           = "#1e1e1e"; // #1C2021
 static const char col_gray2[]           = "#373737";
 static const char col_gray3[]           = "#ddc7a1";
 static const char col_gray4[]           = "#ddc7a1"/*"#fbf1c7"*/;
 static const char col_cyan[]            = "#ddc7a1"; // #393939
-static const unsigned int baralpha      = 0xdd;
+static const unsigned int baralpha      = 0xee;
 static const unsigned int borderalpha   = OPAQUE;
 static const char *colors[][3]          = {
 	/*               fg         bg         border   */
@@ -127,6 +126,11 @@ static const Key keys[] = {
 //	{ MODKEY|ShiftMask,             XK_p,                     spawn,          SHCMD("dmenu_run") },
 //	{ MODKEY|ControlMask,		XK_space,                 spawn,          SHCMD("dmenu_run") },
 	{ MODKEY,                       XK_Return,                spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_Right,                 spawn,          SHCMD("xdotool mousemove_relative -- 20 0") },
+	{ MODKEY,                       XK_Up,                 spawn,          SHCMD("xdotool mousemove_relative -- 0 -20") },
+	{ MODKEY,                       XK_Left,                 spawn,          SHCMD("xdotool mousemove_relative -- -20 0") },
+	{ MODKEY,                       XK_Down,                 spawn,          SHCMD("xdotool mousemove_relative -- 0 20") },
+	{ MODKEY|ControlMask,           XK_Return,                spawn,          SHCMD("xdotool click 1") },
 	{ MODKEY|ShiftMask,             XK_grave,                 spawn,          SHCMD(TERMINAL " -e lfrun ~/dox/notes/") },
 	{ MODKEY,                       XK_grave,                 togglescratch,  {.v = scratchpadcmd } },
 //	{ MODKEY,			XK_grave,                 spawn,          SHCMD(TERMINAL " -c floating -e nvim $HOME/dox/note.tmp") },
