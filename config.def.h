@@ -17,14 +17,14 @@ static const unsigned int gappiv         = 10;                         /* vert i
 static const unsigned int gappoh         = single_oh;                  /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov         = single_ov;                  /* vert outer gap between windows and screen edge */
 static const unsigned int gaps2[]        = {                          // {gappoh, gappov, gappih, gappiv}
-	80, // gappoh
-	60, // gappov
+	80, // gappov
+	67, // gappoh
 	gappih, // gappih
 	gappiv // gappiv
 };
 // underlining
-static const unsigned int ulinepad	= 5;	/* horizontal padding between the underline and tag */
-static const unsigned int ulinestroke	= 0;	/* thickness / height of the underline */
+static const unsigned int ulinepad	= 1;	/* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke	= 1;	/* thickness / height of the underline */
 static const unsigned int ulinevoffset	= 0;	/* how far above the bottom of the bar the line should appear */
 static const int ulineall 		= 0;	/* 1 to show underline on all tags, 0 for just the active ones */
 static       int smartgaps              = 0;        /* 1 means no outer gap when there is only one window */
@@ -34,19 +34,19 @@ static const int swallowfloating        = 0;        /* 1 means swallow floating 
 static const int showbar                = 1;        /* 0 means no bar */
 static const int topbar                 = 1;        /* 0 means bottom bar */
 static const int horizpadbar            = 4;        /* horizontal padding for statusbar */
-static const int vertpadbar             = 12;        /* vertical padding for statusbar */
+static const int vertpadbar             = 16;        /* vertical padding for statusbar */
 static const char *fonts[]              = { "Inter:style=Medium:antialias=true:size=11.5", "Font Awesome 7 Free:style=solid:size=11.5", "symbols nerd font:size=13.5" };
 static const char col_gray1[]           = "#1e1e1e"; // #1C2021
 static const char col_gray2[]           = "#373737";
 static const char col_gray3[]           = "#ddc7a1";
 static const char col_gray4[]           = "#ddc7a1"/*"#fbf1c7"*/;
 static const char col_cyan[]            = "#ddc7a1"; // #393939
-static const unsigned int baralpha      = 0xee;
+static const unsigned int baralpha      = 0xff;
 static const unsigned int borderalpha   = OPAQUE;
 static const char *colors[][3]          = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray1, col_gray3,  "#555555"  },
+	[SchemeNorm] = { col_gray3, col_gray1, "#202020" },
+	[SchemeSel]  = { col_gray3, col_gray1,  "#303030"  },
 	[SchemeTitle]  = { col_gray3, col_gray1,  col_cyan  },
 };
 static const unsigned int alphas[][3]      = {
@@ -57,7 +57,7 @@ static const unsigned int alphas[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "sh", "www", "code", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -67,8 +67,9 @@ static const Rule rules[] = {
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 //	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
 //	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
-	{ "st",      NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "st",      NULL,     NULL,           0,         0,          1,           1,        -1 },
 	{ "floating",NULL,     NULL,           0,         1,          0,           1,        -1 },
+	{ "plank",   NULL,     NULL,           0,         1,          0,           1,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
@@ -156,7 +157,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_p,                     spawn,          SHCMD("dmenu_run") },
 	{ MODKEY,                       XK_n,                     spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
-	{ MODKEY,                       XK_c,                     spawn,          SHCMD("pgrep xbanish && pkill xbanish || setsid -f xbanish -t 1")},
+	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
+	{ MODKEY|ShiftMask,             XK_m,                     spawn,          SHCMD(TERMINAL " -e pulsemixer")},
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
 	{ MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,                     focusstack,     {.i = -1 } },
@@ -168,20 +170,20 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_l,                     setcfact,       {.f = -0.25} },
 	{ MODKEY|ShiftMask,             XK_o,                     setcfact,       {.f =  0.00} },
 	{ MODKEY|ShiftMask,             XK_Return,                zoom,           {0} },
-//	{ MODKEY|Mod1Mask,              XK_u,                     incrgaps,       {.i = +1 } },
-//	{ MODKEY|Mod1Mask|ShiftMask,    XK_u,                     incrgaps,       {.i = -1 } },
-//	{ MODKEY|Mod1Mask,              XK_i,                     incrigaps,      {.i = +1 } },
-//	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,                     incrigaps,      {.i = -1 } },
-//	{ MODKEY|Mod1Mask,              XK_o,                     incrogaps,      {.i = +1 } },
-//	{ MODKEY|Mod1Mask|ShiftMask,    XK_o,                     incrogaps,      {.i = -1 } },
-//	{ MODKEY|Mod1Mask,              XK_6,                     incrihgaps,     {.i = +1 } },
-//	{ MODKEY|Mod1Mask|ShiftMask,    XK_6,                     incrihgaps,     {.i = -1 } },
-//	{ MODKEY|Mod1Mask,              XK_7,                     incrivgaps,     {.i = +1 } },
-//	{ MODKEY|Mod1Mask|ShiftMask,    XK_7,                     incrivgaps,     {.i = -1 } },
-//	{ MODKEY|Mod1Mask,              XK_8,                     incrohgaps,     {.i = +1 } },
-//	{ MODKEY|Mod1Mask|ShiftMask,    XK_8,                     incrohgaps,     {.i = -1 } },
-//	{ MODKEY|Mod1Mask,              XK_9,                     incrovgaps,     {.i = +1 } },
-//	{ MODKEY|Mod1Mask|ShiftMask,    XK_9,                     incrovgaps,     {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_u,                     incrgaps,       {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_u,                     incrgaps,       {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_i,                     incrigaps,      {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,                     incrigaps,      {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_o,                     incrogaps,      {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_o,                     incrogaps,      {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_6,                     incrihgaps,     {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_6,                     incrihgaps,     {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_7,                     incrivgaps,     {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_7,                     incrivgaps,     {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_8,                     incrohgaps,     {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_8,                     incrohgaps,     {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_9,                     incrovgaps,     {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_9,                     incrovgaps,     {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_g,                     togglegaps,     {0} }, // toggles the enablegap flag
 	{ MODKEY|ShiftMask,             XK_g,                     togglepresetgaps,{0} }, // toggles between the preset gaps
 	{ MODKEY|ShiftMask|ControlMask, XK_g,                     resetgaps,      {0} }, // toggles between the preset gaps
@@ -190,9 +192,9 @@ static const Key keys[] = {
 	{ MODKEY,			XK_q,                     killclient,     {0} },
 	{ MODKEY|ControlMask,		XK_comma,                 cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period,                cyclelayout,    {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_t,                     setlayout,      {.v = &layouts[0]} },
-	{ MODKEY|ShiftMask,             XK_f,                     setlayout,      {.v = &layouts[1]} },
-	{ MODKEY|ShiftMask,             XK_m,                     setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|ControlMask,           XK_t,                     setlayout,      {.v = &layouts[0]} },
+	{ MODKEY|ControlMask,           XK_f,                     setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ControlMask,           XK_m,                     setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_f,                     fullscreen,     {0} },
 	{ MODKEY,                       XK_space,                 setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,                 togglefloating, {0} },

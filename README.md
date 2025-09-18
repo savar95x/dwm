@@ -2,6 +2,13 @@
 My active build of suckless's dynamic window manager.  
 ## Preview
 <div align=center>
+<img width=99% src=.assets/0_1.png />
+</div>
+<div align=center>
+<img width=49% src=.assets/0_2.png />
+<img width=49% src=.assets/0_3.png />
+</div>
+<div align=center>
 <img width=49% src=.assets/1.png />
 <img width=49% src=.assets/2.png />
 </div>
