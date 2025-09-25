@@ -219,7 +219,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                                     7)
 	TAGKEYS(                        XK_9,                                     8)
 	{ MODKEY|ShiftMask|ControlMask, XK_q,                     quit,           {0} },
-	{ MODKEY, XK_c,      quit,           {1} }, 
+	{ MODKEY|ShiftMask|ControlMask, XK_r,                     quit,           {1} },
 	{ MODKEY|ShiftMask,             XK_q,                     spawn,          SHCMD("$HOME/.local/scripts/dmpkillwm dwm") },
 	{ MODKEY|ShiftMask,             XK_r,                     spawn,          SHCMD("$HOME/.config/dwm/autostart.sh") },
 };
