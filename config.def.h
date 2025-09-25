@@ -7,6 +7,8 @@
 //#define TORRENTCLIENT "(pgrep transmission-da &>/dev/null && transmission-qt) || (setsid -f transmission-daemon && transmission-qt)"
 #define TORRENTCLIENT "(pgrep transmission-da &>/dev/null && st -e tremc) || (setsid -f transmission-daemon && st -e tremc)"
 
+#define SESSION_FILE "/tmp/dwm-session"
+
 /* appearance */
 static const unsigned int borderpx       = 0;                          /* border pixel of windows */
 static const unsigned int snap           = 22;                         /* snap pixel */
@@ -154,10 +156,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_t,                     spawn,          SHCMD(TORRENTCLIENT) },
 	{ MODKEY,                       XK_r,                     spawn,          SHCMD(TERMINAL " -e /home/savar/.local/bin/lfrun") },
 //	{ MODKEY,                       XK_p,                     spawn,          SHCMD(TERMINAL " -e shellcaster") },
-	{ MODKEY,                       XK_p,                     spawn,          SHCMD("dmenu_run") },
 	{ MODKEY,                       XK_n,                     spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
-	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
+        { MODKEY,                       XK_p,                     spawn,          SHCMD("dmenu_run -p run:") },
 	{ MODKEY|ShiftMask,             XK_m,                     spawn,          SHCMD(TERMINAL " -e pulsemixer")},
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
 	{ MODKEY,                       XK_j,                     focusstack,     {.i = +1 } },
@@ -218,6 +219,7 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                                     7)
 	TAGKEYS(                        XK_9,                                     8)
 	{ MODKEY|ShiftMask|ControlMask, XK_q,                     quit,           {0} },
+	{ MODKEY, XK_c,      quit,           {1} }, 
 	{ MODKEY|ShiftMask,             XK_q,                     spawn,          SHCMD("$HOME/.local/scripts/dmpkillwm dwm") },
 	{ MODKEY|ShiftMask,             XK_r,                     spawn,          SHCMD("$HOME/.config/dwm/autostart.sh") },
 };

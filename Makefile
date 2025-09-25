@@ -5,6 +5,9 @@ include config.mk
 
 SRC = drw.c dwm.c util.c
 OBJ = ${SRC:.c=.o}
+DESTDIR = /home/savar
+PREFIX= /.local
+MANPREFIX= ${PREFIX}/share/man
 
 all: options dwm
 
