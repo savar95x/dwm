@@ -162,7 +162,7 @@ static const Key keys[] = {
 //	{ MODKEY,                       XK_p,                     spawn,          SHCMD(TERMINAL " -e shellcaster") },
 	{ MODKEY,                       XK_n,                     spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
-	{ MODKEY|ShiftMask,             XK_t,                     spawn,          SHCMD("nsxiv ~/dox/acads_sem7/tt.png") },
+	{ MODKEY,                       XK_a,                     spawn,          SHCMD("st -e lf ~/dox/acads_sem7/") },
         { MODKEY,                       XK_p,                     spawn,          SHCMD("dmenu_run -p run:") },
 	{ MODKEY|ShiftMask,             XK_m,                     spawn,          SHCMD(TERMINAL " -e pulsemixer")},
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },

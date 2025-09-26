@@ -6,7 +6,8 @@ VERSION = 6.4
 # paths
 PREFIX = /usr/local
 MANPREFIX = ${PREFIX}/share/man
-DESTDIR = /home/savar
+
+DESTDIR = ~
 PREFIX= /.local
 MANPREFIX= ${PREFIX}/share/man
 
