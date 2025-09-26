@@ -37,7 +37,11 @@ static const int showbar                = 1;        /* 0 means no bar */
 static const int topbar                 = 1;        /* 0 means bottom bar */
 static const int horizpadbar            = 4;        /* horizontal padding for statusbar */
 static const int vertpadbar             = 16;        /* vertical padding for statusbar */
-static const char *fonts[]              = { "Inter:style=Medium:antialias=true:size=11.5", "Font Awesome 7 Free:style=solid:size=11.5", "symbols nerd font:size=13.5" };
+static const char *fonts[]              = {
+	"Geist:style=Medium:antialias=true:size=12",
+	"Font Awesome 7 Free:style=solid:size=11.5",
+	"symbols nerd font:size=13.5"
+};
 static const char col_gray1[]           = "#1e1e1e"; // #1C2021
 static const char col_gray2[]           = "#373737";
 static const char col_gray3[]           = "#ddc7a1";
@@ -158,6 +162,7 @@ static const Key keys[] = {
 //	{ MODKEY,                       XK_p,                     spawn,          SHCMD(TERMINAL " -e shellcaster") },
 	{ MODKEY,                       XK_n,                     spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
+	{ MODKEY|ShiftMask,             XK_t,                     spawn,          SHCMD("nsxiv ~/dox/acads_sem7/tt.png") },
         { MODKEY,                       XK_p,                     spawn,          SHCMD("dmenu_run -p run:") },
 	{ MODKEY|ShiftMask,             XK_m,                     spawn,          SHCMD(TERMINAL " -e pulsemixer")},
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
