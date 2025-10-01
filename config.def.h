@@ -125,7 +125,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
-static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "100x25", NULL };
+static const char *scratchpadcmd[] = { "st", "-c", "floating", "-t", scratchpadname, "-g", "100x25", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key                       function        argument */
@@ -162,7 +162,7 @@ static const Key keys[] = {
 //	{ MODKEY,                       XK_p,                     spawn,          SHCMD(TERMINAL " -e shellcaster") },
 	{ MODKEY,                       XK_n,                     spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
-	{ MODKEY,                       XK_a,                     spawn,          SHCMD("st -e lf ~/dox/acads_sem7/") },
+	{ MODKEY,                       XK_a,                     spawn,          SHCMD("st -e lfrun ~/dox/acads_sem7/") },
         { MODKEY,                       XK_p,                     spawn,          SHCMD("dmenu_run -p run:") },
 	{ MODKEY|ShiftMask,             XK_m,                     spawn,          SHCMD(TERMINAL " -e pulsemixer")},
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
