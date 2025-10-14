@@ -10,17 +10,17 @@
 #define SESSION_FILE "/tmp/dwm-session"
 
 /* appearance */
-static const unsigned int borderpx       = 0;                          /* border pixel of windows */
+static const unsigned int borderpx       = 1;                          /* border pixel of windows */
 static const unsigned int snap           = 22;                         /* snap pixel */
-static const unsigned int single_oh      = 108;                        // for now unsued, since i have a toggle for preset gaps
-static const unsigned int single_ov      = 192;
+static const unsigned int single_oh      = 160;                        // for now unsued, since i have a toggle for preset gaps
+static const unsigned int single_ov      = 260;
 static const unsigned int gappih         = 10;                         /* horiz inner gap between windows */
 static const unsigned int gappiv         = 10;                         /* vert inner gap between windows */
 static const unsigned int gappoh         = single_oh;                  /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov         = single_ov;                  /* vert outer gap between windows and screen edge */
 static const unsigned int gaps2[]        = {                          // {gappoh, gappov, gappih, gappiv}
 	80, // gappov
-	67, // gappoh
+	80, // gappoh
 	gappih, // gappih
 	gappiv // gappiv
 };
@@ -52,7 +52,7 @@ static const unsigned int borderalpha   = OPAQUE;
 static const char *colors[][3]          = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, "#202020" },
-	[SchemeSel]  = { col_gray3, col_gray1,  "#303030"  },
+	[SchemeSel]  = { col_gray3, col_gray1,  "#363636"  },
 	[SchemeTitle]  = { col_gray3, col_gray1,  col_cyan  },
 };
 static const unsigned int alphas[][3]      = {
@@ -63,7 +63,7 @@ static const unsigned int alphas[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "sh", "www", "code", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "sh", "www", "code", "acad", "5", "6", "7", "game", "misc" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -162,7 +162,7 @@ static const Key keys[] = {
 //	{ MODKEY,                       XK_p,                     spawn,          SHCMD(TERMINAL " -e shellcaster") },
 	{ MODKEY,                       XK_n,                     spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
-	{ MODKEY,                       XK_a,                     spawn,          SHCMD("st -e lfrun ~/dox/acads_sem7/") },
+	{ MODKEY,                       XK_a,                     spawn,          SHCMD("cd ~/dox/acads_sem7/; st") },
         { MODKEY,                       XK_p,                     spawn,          SHCMD("dmenu_run -p run:") },
 	{ MODKEY|ShiftMask,             XK_m,                     spawn,          SHCMD(TERMINAL " -e pulsemixer")},
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
