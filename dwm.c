@@ -18,7 +18,8 @@
  *
  * Keys and tagging rules are organized as arrays and defined in config.h.
  *
- * To understand everything else, start reading main(). */
+ * To understand everything else, start reading main().
+ */
 #include <errno.h>
 #include <locale.h>
 #include <signal.h>
@@ -467,7 +468,8 @@ arrange(Monitor *m)
 	if (m) {
 		arrangemon(m);
 		restack(m);
-	/* --- START of code for monocle no corner --- */
+
+	/* no corner monocle */
         Client *c;
         /* Check if current layout is Monocle (checks if address matches) */
         int isMonocle = (m->lt[m->sellt]->arrange == monocle);
@@ -491,7 +493,7 @@ arrange(Monitor *m)
                 XDeleteProperty(dpy, c->win, netatom[NetWMState]);
             }
         }
-        /* --- END of code for monocle no corner --- */
+	/* end of no corner monocle logic */
 
 	} else for (m = mons; m; m = m->next)
 		arrangemon(m);
@@ -2036,7 +2038,7 @@ setfullscreen(Client *c, int fullscreen)
 
 Layout *last_layout;
 void
-fullscreen(const Arg *arg) // probably works correct, not sure (goal is to toggle between monocle and the last layout independent of togglebar)
+fullscreen(const Arg *arg)
 {
 	if (selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt] != &layouts[2]) {
 		for(last_layout = (Layout *)layouts; last_layout != selmon->lt[selmon->sellt]; last_layout++);
@@ -2048,7 +2050,6 @@ fullscreen(const Arg *arg) // probably works correct, not sure (goal is to toggl
 		if (!selmon->showbar)
 			togglebar(arg);
 	}
-	//togglebar(arg);
 }
 
 void

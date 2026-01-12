@@ -40,7 +40,8 @@ And my correspoding dotfiles including the configs and the scripts are over [her
 ### Patches
 The patches that I've used are in the `patches/` directory, do take a look if you're curious  
 ### What I've added on my own
-- single client padding  
+- No Corner in Monocle mode with picom (added an EWMH atom to indicate monocle)  
+- single client padding (not anymore, expanded into biggaps flag, see below)  
 - underline tag (the patch does not work)  
 - drw_fontset_free() from original dwm/drw.c \[dunno which patch removed it and why\],
 - and making alpha and titlecolor work together \[just a parallel third subarray in alphas\[\]\[3\] surprisingly fixed it\]
