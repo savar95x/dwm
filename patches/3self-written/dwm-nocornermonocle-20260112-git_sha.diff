@@ -1,0 +1,47 @@
+diff --git a/dwm.c b/dwm.c
+index 8f4fa75..4030b04 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -61,6 +61,7 @@ enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
+ enum { SchemeNorm, SchemeSel }; /* color schemes */
+ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
++       NetWMMaximizedVert, NetWMMaximizedHorz, /* -> no corner monocle */
+        NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+ enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
+ enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+@@ -388,6 +389,25 @@ arrange(Monitor *m)
+ 	if (m) {
+ 		arrangemon(m);
+ 		restack(m);
++
++		/* no corner monocle */
++		Client *c;
++		int isMonocle = (m->lt[m->sellt]->arrange == monocle);
++		Atom data[2] = { netatom[NetWMMaximizedVert], netatom[NetWMMaximizedHorz] };
++
++		for (c = m->clients; c; c = c->next) {
++			if (!ISVISIBLE(c)) continue;
++			if (c->isfullscreen) continue;
++
++			if (isMonocle) { /* set */
++				XChangeProperty(dpy, c->win, netatom[NetWMState], XA_ATOM, 32,
++						PropModeReplace, (unsigned char *)data, 2);
++			} else { /* delete */
++				XDeleteProperty(dpy, c->win, netatom[NetWMState]);
++			}
++		}
++		/* end of no corner monocle logic */
++
+ 	} else for (m = mons; m; m = m->next)
+ 		arrangemon(m);
+ }
+@@ -1577,6 +1597,8 @@ setup(void)
+ 	netatom[NetWMCheck] = XInternAtom(dpy, "_NET_SUPPORTING_WM_CHECK", False);
+ 	netatom[NetWMFullscreen] = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
+ 	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
++	netatom[NetWMMaximizedVert] = XInternAtom(dpy, "_NET_WM_STATE_MAXIMIZED_VERT", False); /* no corner monocle */
++	netatom[NetWMMaximizedHorz] = XInternAtom(dpy, "_NET_WM_STATE_MAXIMIZED_HORZ", False);
+ 	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
+ 	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
+ 	/* init cursors */

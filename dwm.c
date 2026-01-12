@@ -18,8 +18,7 @@
  *
  * Keys and tagging rules are organized as arrays and defined in config.h.
  *
- * To understand everything else, start reading main().
- */
+ * To understand everything else, start reading main(). */
 #include <errno.h>
 #include <locale.h>
 #include <signal.h>
@@ -67,10 +66,12 @@
 
 /* enums */
 enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
-enum { SchemeNorm, SchemeSel, SchemeTitle }; /* color schemes */
+enum { SchemeNorm, SchemeSel, SchemeTitle, SchemeUline, SchemeLtsymbol }; /* color schemes */
 enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
-       NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+       NetWMWindowTypeDialog, NetClientList,
+       NetWMMaximizedVert, NetWMMaximizedHorz, // monocle no corner
+       NetLast }; /* EWMH atoms */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
 enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
        ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
@@ -466,6 +467,32 @@ arrange(Monitor *m)
 	if (m) {
 		arrangemon(m);
 		restack(m);
+	/* --- START of code for monocle no corner --- */
+        Client *c;
+        /* Check if current layout is Monocle (checks if address matches) */
+        int isMonocle = (m->lt[m->sellt]->arrange == monocle);
+        
+        /* Create the data array for the property */
+        Atom data[2] = { netatom[NetWMMaximizedVert], netatom[NetWMMaximizedHorz] };
+
+        for (c = m->clients; c; c = c->next) {
+            /* 1. Skip if window is invisible */
+            if (!ISVISIBLE(c)) continue;
+
+            /* 2. Skip if window is actually fullscreen (let setfullscreen handle that) */
+            if (c->isfullscreen) continue; 
+
+            if (isMonocle) {
+                /* Set the Maximized State */
+                XChangeProperty(dpy, c->win, netatom[NetWMState], XA_ATOM, 32,
+                    PropModeReplace, (unsigned char *)data, 2);
+            } else {
+                /* Clear the State (Standard DWM doesn't use other states, so deleting is safe) */
+                XDeleteProperty(dpy, c->win, netatom[NetWMState]);
+            }
+        }
+        /* --- END of code for monocle no corner --- */
+
 	} else for (m = mons; m; m = m->next)
 		arrangemon(m);
 }
@@ -1054,7 +1081,7 @@ drawbar(Monitor *m)
 		x += w;
 	}
 	w = TEXTW(m->ltsymbol);
-	drw_setscheme(drw, scheme[SchemeNorm]);
+	drw_setscheme(drw, scheme[SchemeLtsymbol]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
 	if ((w = m->ww - tw - x) > bh) {
@@ -1496,8 +1523,8 @@ manage(Window w, XWindowAttributes *wa)
 	if (term)
 		swallow(term, c);
 
-	if (c && c->mon == selmon)
-		XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
+	//if (c && c->mon == selmon)
+	//	XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
 
 	focus(NULL);
 }
@@ -2115,6 +2142,9 @@ setup(void)
 	netatom[NetWMState] = XInternAtom(dpy, "_NET_WM_STATE", False);
 	netatom[NetWMCheck] = XInternAtom(dpy, "_NET_SUPPORTING_WM_CHECK", False);
 	netatom[NetWMFullscreen] = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
+	// next 2 monocle no corner indication
+	netatom[NetWMMaximizedVert] = XInternAtom(dpy, "_NET_WM_STATE_MAXIMIZED_VERT", False);
+	netatom[NetWMMaximizedHorz] = XInternAtom(dpy, "_NET_WM_STATE_MAXIMIZED_HORZ", False);
 	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
 	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
 	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
@@ -2469,9 +2499,9 @@ unmanage(Client *c, int destroyed)
 		updateclientlist();
 	}
 
-	if (m == selmon && m->sel)
-		XWarpPointer(dpy, None, m->sel->win, 0, 0, 0, 0,
-		             m->sel->w/2, m->sel->h/2);
+	//if (m == selmon && m->sel)
+		//XWarpPointer(dpy, None, m->sel->win, 0, 0, 0, 0,
+		  //           m->sel->w/2, m->sel->h/2);
 }
 
 void

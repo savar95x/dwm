@@ -10,10 +10,10 @@
 #define SESSION_FILE "/tmp/dwm-session"
 
 /* appearance */
-static const unsigned int borderpx       = 1;                          /* border pixel of windows */
+static const unsigned int borderpx       = 0;                          /* border pixel of windows */
 static const unsigned int snap           = 22;                         /* snap pixel */
-static const unsigned int single_oh      = 160;                        // for now unsued, since i have a toggle for preset gaps
-static const unsigned int single_ov      = 260;
+static const unsigned int single_oh      = 175;                        // for now unsued, since i have a toggle for preset gaps
+static const unsigned int single_ov      = 275;
 static const unsigned int gappih         = 10;                         /* horiz inner gap between windows */
 static const unsigned int gappiv         = 10;                         /* vert inner gap between windows */
 static const unsigned int gappoh         = single_oh;                  /* horiz outer gap between windows and screen edge */
@@ -25,9 +25,9 @@ static const unsigned int gaps2[]        = {                          // {gappoh
 	gappiv // gappiv
 };
 // underlining
-static const unsigned int ulinepad	= 1;	/* horizontal padding between the underline and tag */
-static const unsigned int ulinestroke	= 1;	/* thickness / height of the underline */
-static const unsigned int ulinevoffset	= 0;	/* how far above the bottom of the bar the line should appear */
+static const unsigned int ulinepad	= 2;	/* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke	= 0;	/* thickness / height of the underline */
+static const unsigned int ulinevoffset	= 5;	/* how far above the bottom of the bar the line should appear */
 static const int ulineall 		= 0;	/* 1 to show underline on all tags, 0 for just the active ones */
 static       int smartgaps              = 0;        /* 1 means no outer gap when there is only one window */
 static       int enablegaps             = 1;
@@ -36,34 +36,41 @@ static const int swallowfloating        = 0;        /* 1 means swallow floating 
 static const int showbar                = 1;        /* 0 means no bar */
 static const int topbar                 = 1;        /* 0 means bottom bar */
 static const int horizpadbar            = 4;        /* horizontal padding for statusbar */
-static const int vertpadbar             = 16;        /* vertical padding for statusbar */
+static const int vertpadbar             = 30;        /* vertical padding for statusbar */
 static const char *fonts[]              = {
-	"Geist:style=Medium:antialias=true:size=12",
+	"inter:style=Medium:antialias=true:size=12",
+	//"Geist:style=Medium:antialias=true:size=12",
 	"Font Awesome 7 Free:style=solid:size=11.5",
 	"symbols nerd font:size=13.5"
 };
-static const char col_gray1[]           = "#1e1e1e"; // #1C2021
+static const char col_gray1[]           = "#111111"; // #1C2021
+static const char col_bg[]              = "#111111";
 static const char col_gray2[]           = "#373737";
 static const char col_gray3[]           = "#ddc7a1";
 static const char col_gray4[]           = "#ddc7a1"/*"#fbf1c7"*/;
 static const char col_cyan[]            = "#ddc7a1"; // #393939
 static const unsigned int baralpha      = 0xff;
 static const unsigned int borderalpha   = OPAQUE;
-static const char *colors[][3]          = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, "#202020" },
-	[SchemeSel]  = { col_gray3, col_gray1,  "#363636"  },
-	[SchemeTitle]  = { col_gray3, col_gray1,  col_cyan  },
-};
+static const char *colors[][3]      = {
+	/* fg         bg         border   */
+	[SchemeNorm] = { "#928374", col_bg, "#171717" }, //inactive tab
+	[SchemeSel]  = { "#fbf1c7", "#111111", "#928374" },
+	[SchemeTitle]= { "#fbf1c7", col_bg, col_cyan  },
+	[SchemeUline]  = { "#D57B76", "#111111", "#363636" },
+	[SchemeLtsymbol]  = { "#ddc7a1", "#111111", "#fe8019" },
+	};
+
 static const unsigned int alphas[][3]      = {
-    /*               fg      bg        border*/
-    [SchemeNorm] = { OPAQUE, baralpha, borderalpha },
-	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
-	[SchemeTitle]  = { OPAQUE, baralpha,  borderalpha  }, // removing this array would have weird behaviour with title bg color
+	/* fg      bg        border*/
+	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
+	[SchemeSel]  = { OPAQUE, baralpha, baralpha }, 
+	[SchemeTitle]= { OPAQUE, baralpha, borderalpha },
+	[SchemeUline]= { OPAQUE, OPAQUE, borderalpha },
+	[SchemeLtsymbol]= { OPAQUE, OPAQUE, borderalpha },
 };
 
 /* tagging */
-static const char *tags[] = { "sh", "www", "code", "acad", "5", "6", "7", "game", "misc" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -73,6 +80,7 @@ static const Rule rules[] = {
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 //	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
 //	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
+	{ "Hollow Knight", NULL,     NULL,           8 << 8,    0,          0,          -1,        -1 },
 	{ "st",      NULL,     NULL,           0,         0,          1,           1,        -1 },
 	{ "floating",NULL,     NULL,           0,         1,          0,           1,        -1 },
 	{ "plank",   NULL,     NULL,           0,         1,          0,           1,        -1 },
@@ -90,7 +98,7 @@ static const int lockfullscreen = 0; /* 1 will force focus on the fullscreen win
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
+	{ "::",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 	{ "[@]",      spiral },
@@ -153,8 +161,9 @@ static const Key keys[] = {
 	{     0 ,                       XF86XK_AudioMute,         spawn,          SHCMD("~/.config/dwm/scripts/bar/vol t")},
 //	{     0 ,                       XF86XK_AudioRaiseVolume,  spawn,          SHCMD("$HOME/.local/scripts/sb_audio inc 2 && pkill -RTMIN+10 dwmblocks")},
 	{ MODKEY,                       XK_s,                     spawn,          SHCMD("$HOME/.local/scripts/dmlscripts") },
-	{ MODKEY,                       XK_w,                     spawn,          SHCMD("$HOME/.local/scripts/dmweb")},
-	{ MODKEY,                       XK_e,                     spawn,          SHCMD(EMAIL) },
+	{ MODKEY,                       XK_w,                     spawn,          SHCMD("$home/.local/scripts/dmweb")},
+//	{ MODKEY,                       XK_e,                     spawn,          SHCMD(EMAIL) },
+	{ MODKEY,                       XK_e,                     spawn,          SHCMD("~/.config/dwm/scripts/bar/control_center") },
 	{ MODKEY,                       XK_m,                     spawn,          SHCMD(TERMINAL " -e ncmpcpp") },
 	{ MODKEY,                       XK_y,                     spawn,          SHCMD(TERMINAL " -e ytfzf") },
 	{ MODKEY,                       XK_t,                     spawn,          SHCMD(TORRENTCLIENT) },
@@ -162,7 +171,8 @@ static const Key keys[] = {
 //	{ MODKEY,                       XK_p,                     spawn,          SHCMD(TERMINAL " -e shellcaster") },
 	{ MODKEY,                       XK_n,                     spawn,          SHCMD(TERMINAL " -e newsboat") },
 	{ MODKEY,                       XK_g,                     spawn,          SHCMD(TERMINAL " -e gotop") },
-	{ MODKEY,                       XK_a,                     spawn,          SHCMD("cd ~/dox/acads_sem7/; st") },
+	{ MODKEY|ShiftMask,             XK_b,                     spawn,          SHCMD(TERMINAL " -e battop") },
+	{ MODKEY,                       XK_a,                     spawn,          SHCMD("cd ~/dox/acads_winter_nov-jan/; st") },
         { MODKEY,                       XK_p,                     spawn,          SHCMD("dmenu_run -p run:") },
 	{ MODKEY|ShiftMask,             XK_m,                     spawn,          SHCMD(TERMINAL " -e pulsemixer")},
 	{ MODKEY,                       XK_b,                     togglebar,      {0} },
