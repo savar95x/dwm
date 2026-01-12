@@ -68,7 +68,7 @@ I use startx from the console. Just make a file in the home of your user `.xinit
 export XAUTHORITY="$HOME/.local/run/x11/xauth"
 setsid -f $HOME/.config/dwm/autostart.sh &
 export MYMENU="dmenu"
-exec dbus-launch dwm
+exec dbus-run-session dwm
 ```  
 And make this file `~/.xinitrc` executable  
 ```bash
