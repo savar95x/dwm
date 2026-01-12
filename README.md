@@ -6,12 +6,12 @@ My active build of suckless's dynamic window manager.
 <img width=49% src=.assets/1_2.png />
 </div>
 
-### Widget
+### Widget (Elkowar's Wacky Widgets)
 <div align=center>
 <img width=49% src=.assets/1_3.png />
 </div>
 
-## Older Looks
+## Older Looks (mainly just colors and wall change)
 <div align=center>
 <img width=49% src=.assets/0_1.png />
 <img width=49% src=.assets/0_2.png />
