@@ -6,10 +6,7 @@ My active build of suckless's dynamic window manager.
 <img width=49% src=.assets/1_2.png />
 </div>
 
-### Widget (Elkowar's Wacky Widgets)
-<div align=center>
-<img width=49% src=.assets/1_3.png />
-</div>
+[Here](https://github.com/savar95x/dotfiles/tree/main/configs/.config/eww)'s the widget config.  
 
 ## Older Looks (mainly just colors and wall change)
 <div align=center>
